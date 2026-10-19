@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Chicken Listings | Clover Hollow Poultry</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <div class="mark">🐔</div>
+      Clover Hollow <span style="color:var(--terracotta)">Poultry</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Chickens by Age</a>
+      <a href="products.html" style="color:var(--terracotta)">All Listings</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu"></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menu-overlay"></div>
+<nav class="mobile-menu" id="mobile-menu">
+  <div class="admin-brand" style="margin-bottom:20px">Menu</div>
+  <a href="index.html">Home</a>
+  <a href="categories.html">Chickens by Age</a>
+  <a href="products.html">All Listings</a>
+  <a href="admin.html">Admin Dashboard</a>
+</nav>
+
+<section class="section section-sm">
+  <div class="container">
+    <h2 class="section-title">All Listings</h2>
+    <p class="section-sub">Every chicken currently available at Clover Hollow.</p>
+
+    <div class="page-header">
+      <h2 id="listing-title">Available Chickens</h2>
+      <div class="filter-bar">
+        <select id="age-filter">
+          <option value="">All ages</option>
+          <option value="4-month">4 Months</option>
+          <option value="5-month">5 Months</option>
+          <option value="6-month">6 Months</option>
+          <option value="older">Older</option>
+        </select>
+        <select id="type-filter">
+          <option value="">All types</option>
+          <option value="Egg layer">Egg layer</option>
+          <option value="Dual purpose">Dual purpose</option>
+          <option value="Ornamental">Ornamental</option>
+          <option value="Meat">Meat</option>
+        </select>
+        <input type="text" id="search-filter" placeholder="Search breed…">
+      </div>
+    </div>
+    <div class="card-grid" id="listing-grid"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-footer" style="margin-bottom:8px">Clover Hollow <span style="color:var(--terracotta)">Poultry</span></div>
+        <p>Small-batch, farm-raised chickens with an aesthetic farm vibe.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="categories.html">By Age</a></li>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">© 2026 Clover Hollow Poultry.</div>
+  </div>
+</footer>
+
+<script src="data/products.js"></script>
+<script src="js/app.js"></script>
+<script>
+(function(){
+  const ageFilter = document.getElementById('age-filter');
+  const typeFilter = document.getElementById('type-filter');
+  const searchFilter = document.getElementById('search-filter');
+  const grid = document.getElementById('listing-grid');
+
+  const labels = { '4-month':'4 Months', '5-month':'5 Months', '6-month':'6 Months', 'older':'Older' };
+    const listingTitle = document.getElementById('listing-title');
+    function setTitle() {
+      const a = ageFilter.value, t = typeFilter.value;
+      const parts = [];
+      if (a) parts.push(labels[a]);
+      if (t) parts.push(t);
+      listingTitle.textContent = parts.length ? parts.join(' ') + ' Chickens' : 'Available Chickens';
+    }
+
+  function render() {
+    const age = ageFilter.value;
+    const type = typeFilter.value;
+    const q = searchFilter.value.toLowerCase();
+    const all = getProducts();
+    const filtered = all.filter(p =>
+      (!age || p.age === age) &&
+      (!type || p.type === type) &&
+      (!q || (p.breed + ' ' + p.ageLabel + ' ' + p.description).toLowerCase().includes(q))
+    );
+    renderCards('listing-grid', filtered);
+    setTitle();
+  }
+
+  ageFilter.addEventListener('change', render);
+  typeFilter.addEventListener('change', render);
+  searchFilter.addEventListener('input', render);
+  render();
+})();
+</script>
+</body>
+</html>

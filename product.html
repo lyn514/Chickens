@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chicken Details | Clover Hollow Poultry</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <div class="mark">🐔</div>
+      Clover Hollow <span style="color:var(--terracotta)">Poultry</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Chickens by Age</a>
+      <a href="products.html">All Listings</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu"></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menu-overlay"></div>
+<nav class="mobile-menu" id="mobile-menu">
+  <div class="admin-brand" style="margin-bottom:20px">Menu</div>
+  <a href="index.html">Home</a>
+  <a href="categories.html">Chickens by Age</a>
+  <a href="products.html">All Listings</a>
+  <a href="admin.html">Admin Dashboard</a>
+</nav>
+
+<section class="section section-sm">
+  <div class="container">
+    <a href="products.html" style="display:inline-flex;align-items:center;gap:6px;font-size:0.9rem;color:var(--sage-dark);margin-bottom:20px">← Back to listings</a>
+
+    <div class="detail-wrapper" id="detail-wrapper">
+      <div class="detail-image">
+        <img id="main-img" src="" alt="" loading="lazy" onerror="this.src='https://placehold.co/600x520?text=Chicken'">
+        <div class="detail-thumbs" id="thumbs"></div>
+      </div>
+      <div class="detail-content" id="detail-content">
+        <div class="tag" id="detail-age"></div>
+        <h2 id="detail-name"></h2>
+        <div class="price" id="detail-price"></div>
+        <div class="stock" id="detail-stock"></div>
+        <div class="specs">
+          <h4>Characteristics</h4>
+          <dl class="spec-list">
+            <dt>Breed</dt><dd id="spec-breed"></dd>
+            <dt>Age</dt><dd id="spec-age"></dd>
+            <dt>Egg Color</dt><dd id="spec-egg"></dd>
+            <dt>Type</dt><dd id="spec-type"></dd>
+            <dt>Notable Traits</dt><dd id="spec-trait"></dd>
+            <dt>Availability</dt><dd id="spec-availability"></dd>
+          </dl>
+        </div>
+        <p style="font-size:0.95rem;color:var(--muted);margin-bottom:18px" id="detail-desc"></p>
+        <p style="font-size:0.82rem;color:var(--muted);margin-top:10px">Interested? Contact the farm to ask about availability.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-footer" style="margin-bottom:8px">Clover Hollow <span style="color:var(--terracotta)">Poultry</span></div>
+        <p>Small-batch, farm-raised chickens with an aesthetic farm vibe.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="categories.html">By Age</a></li>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">© 2026 Clover Hollow Poultry.</div>
+  </div>
+</footer>
+
+<script src="data/products.js"></script>
+<script src="js/app.js"></script>
+<script>
+(function(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  const p = findProduct(id);
+  const wrapper = document.getElementById('detail-wrapper');
+  const content = document.getElementById('detail-content');
+
+  if (!p) {
+    wrapper.innerHTML = '<div class="empty-state"><h3>Chicken not found</h3><p><a href="products.html">Browse listings</a></p></div>';
+    return;
+  }
+
+  document.title = `${p.name} (${p.ageLabel}) | Clover Hollow Poultry`;
+
+  document.getElementById('detail-age').textContent = p.ageLabel;
+  document.getElementById('detail-name').textContent = p.name;
+  document.getElementById('detail-price').textContent = formatPrice(p.price);
+  const stockEl = document.getElementById('detail-stock');
+  stockEl.textContent = p.availability === 'In Stock' ? `In Stock · ${p.stock} available` : 'Sold Out';
+  stockEl.className = 'stock ' + (p.availability === 'In Stock' ? 'in' : 'out');
+
+  const mainImg = document.getElementById('main-img');
+  mainImg.src = p.image;
+  mainImg.alt = p.name;
+
+  const thumbs = document.getElementById('thumbs');
+  const order = ['4-month','5-month','6-month','older'];
+  thumbs.innerHTML = getProducts().filter(x => x.breed === p.breed).sort((a,b) => order.indexOf(a.age) - order.indexOf(b.age))
+    .map(x => `<a class="thumb ${x.id == p.id ? 'active' : ''}" href="product.html?id=${esc(x.id)}" title="${esc(x.ageLabel)}"><img src="${esc(x.image)}" alt="${esc(x.breed)} at ${esc(x.ageLabel)}" onerror="this.src='https://placehold.co/80x80?text=+'"></a>`).join('');
+
+  document.getElementById('spec-breed').textContent = p.breed;
+  document.getElementById('spec-age').textContent = p.ageLabel;
+  document.getElementById('spec-egg').textContent = p.eggColor || '—';
+  document.getElementById('spec-type').textContent = p.type || '—';
+  document.getElementById('spec-trait').textContent = p.trait || '—';
+  document.getElementById('spec-availability').textContent = p.availability;
+  document.getElementById('detail-desc').textContent = p.description;
+
+})();
+</script>
+</body>
+</html>

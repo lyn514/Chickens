@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chickens by Age | Clover Hollow Poultry</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <div class="mark">🐔</div>
+      Clover Hollow <span style="color:var(--terracotta)">Poultry</span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html" style="color:var(--terracotta)">Chickens by Age</a>
+      <a href="products.html">All Listings</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu"></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menu-overlay"></div>
+<nav class="mobile-menu" id="mobile-menu">
+  <div class="admin-brand" style="margin-bottom:20px">Menu</div>
+  <a href="index.html">Home</a>
+  <a href="categories.html">Chickens by Age</a>
+  <a href="products.html">All Listings</a>
+  <a href="admin.html">Admin Dashboard</a>
+</nav>
+
+<section class="section section-sm">
+  <div class="container">
+    <h2 class="section-title">Chickens by Age</h2>
+    <p class="section-sub">Choose a stage of life for your flock.</p>
+
+    <div class="category-grid" style="margin-bottom:34px">
+      <a href="categories.html?age=4-month" class="category-card">
+        <div class="category-icon">🐥</div>
+        <h3>4 Months Old</h3>
+        <p>Young pullets, growing fast</p>
+      </a>
+      <a href="categories.html?age=5-month" class="category-card">
+        <div class="category-icon">🐓</div>
+        <h3>5 Months Old</h3>
+        <p>Near point-of-lay pullets</p>
+      </a>
+      <a href="categories.html?age=6-month" class="category-card">
+        <div class="category-icon">🥚</div>
+        <h3>6 Months Old</h3>
+        <p>Ready to lay their first eggs</p>
+      </a>
+      <a href="categories.html?age=older" class="category-card">
+        <div class="category-icon">🐔</div>
+        <h3>Older Hens</h3>
+        <p>Mature, proven layers</p>
+      </a>
+    </div>
+
+    <div class="page-header">
+      <h2 id="category-title">All Chickens</h2>
+      <div class="filter-bar">
+        <select id="age-filter">
+          <option value="">All ages</option>
+          <option value="4-month">4 Months</option>
+          <option value="5-month">5 Months</option>
+          <option value="6-month">6 Months</option>
+          <option value="older">Older</option>
+        </select>
+        <input type="text" id="search-filter" placeholder="Search breed…">
+      </div>
+    </div>
+    <div class="card-grid" id="listing-grid"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-footer" style="margin-bottom:8px">Clover Hollow <span style="color:var(--terracotta)">Poultry</span></div>
+        <p>Small-batch, farm-raised chickens with an aesthetic farm vibe.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">All Listings</a></li>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">© 2026 Clover Hollow Poultry.</div>
+  </div>
+</footer>
+
+<script src="data/products.js"></script>
+<script src="js/app.js"></script>
+<script>
+(function(){
+  const ageFilter = document.getElementById('age-filter');
+  const searchFilter = document.getElementById('search-filter');
+  const title = document.getElementById('category-title');
+  const grid = document.getElementById('listing-grid');
+
+  const params = new URLSearchParams(location.search);
+  const initialAge = params.get('age');
+  if (initialAge) ageFilter.value = initialAge;
+
+  const labels = { '4-month':'4 Months', '5-month':'5 Months', '6-month':'6 Months', 'older':'Older' };
+  function setTitle(age) {
+    title.textContent = age ? labels[age] + ' Chickens' : 'All Chickens';
+  }
+  setTitle(initialAge);
+
+  function render() {
+    const age = ageFilter.value;
+    const q = searchFilter.value.toLowerCase();
+    const all = getProducts();
+    const filtered = all.filter(p => (!age || p.age === age) && (!q || (p.breed + ' ' + p.ageLabel + ' ' + p.description).toLowerCase().includes(q)));
+    renderCards('listing-grid', filtered);
+    setTitle(age);
+  }
+
+  ageFilter.addEventListener('change', render);
+  searchFilter.addEventListener('input', render);
+  render();
+})();
+</script>
+</body>
+</html>

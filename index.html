@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clover Hollow Poultry | Farm-Fresh Chickens</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <div class="mark">🐔</div>
+      Clover Hollow <span style="color:var(--terracotta)">Poultry</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="categories.html">Chickens by Age</a>
+      <a href="products.html">All Listings</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="menu-btn" id="menu-btn" aria-label="Open menu"></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menu-overlay"></div>
+<nav class="mobile-menu" id="mobile-menu">
+  <div class="admin-brand" style="margin-bottom:20px">Menu</div>
+  <a href="index.html">Home</a>
+  <a href="categories.html">Chickens by Age</a>
+  <a href="products.html">All Listings</a>
+  <a href="admin.html">Admin Dashboard</a>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <span class="tag">Aesthetic Farm Fowl</span>
+        <h1>Heritage &amp; Pullet Chickens,<br>Raised with Care</h1>
+        <p>Welcome to Clover Hollow Poultry — a small farm devoted to healthy, happy chickens. Browse our flocks by age, from 4-month pullets to mature laying hens, and find your next feathered family member.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="categories.html" class="btn btn-primary">Shop Chickens</a>
+          <a href="products.html" class="btn btn-outline">View All Listings</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/images/4-month/orpington-4-month.png" alt="Orpington chicken" loading="lazy" onerror="this.src='https://placehold.co/600x420?text=Chicken'">
+        <div class="hero-chip">Fresh from the farm 🌿</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-sm">
+  <div class="container">
+    <h2 class="section-title">Featured Chickens</h2>
+    <p class="section-sub">Hand-selected birds ready for their new coop.</p>
+    <div class="card-grid" id="featured-grid"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <h2 class="section-title">Choose by Age</h2>
+        <p class="section-sub">Every stage of life, from growing pullets to seasoned hens.</p>
+      </div>
+    </div>
+    <div class="category-grid">
+      <a href="categories.html?age=4-month" class="category-card">
+        <div class="category-icon">🐥</div>
+        <h3>4 Months Old</h3>
+        <p>Young pullets, growing fast</p>
+      </a>
+      <a href="categories.html?age=5-month" class="category-card">
+        <div class="category-icon">🐓</div>
+        <h3>5 Months Old</h3>
+        <p>Near point-of-lay pullets</p>
+      </a>
+      <a href="categories.html?age=6-month" class="category-card">
+        <div class="category-icon">🥚</div>
+        <h3>6 Months Old</h3>
+        <p>Ready to lay their first eggs</p>
+      </a>
+      <a href="categories.html?age=older" class="category-card">
+        <div class="category-icon">🐔</div>
+        <h3>Older Hens</h3>
+        <p>Mature, proven layers</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand-footer" style="margin-bottom:8px">Clover Hollow <span style="color:var(--terracotta)">Poultry</span></div>
+        <p>Small-batch, farm-raised chickens with an aesthetic farm vibe. Healthy birds, honest prices.</p>
+      </div>
+      <div>
+        <h4>Shop</h4>
+        <ul>
+          <li><a href="categories.html">By Age</a></li>
+          <li><a href="products.html">All Listings</a></li>
+          <li><a href="admin.html">Admin Dashboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Info</h4>
+        <ul>
+          <li><a href="#">About the Farm</a></li>
+          <li><a href="#">Care Guides</a></li>
+          <li><a href="#">Breed Directory</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">© 2026 Clover Hollow Poultry.</div>
+  </div>
+</footer>
+
+<script src="data/products.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const featured = getProducts().filter(p => p.featured).slice(0, 6);
+  renderCards('featured-grid', featured);
+});
+</script>
+</body>
+</html>
